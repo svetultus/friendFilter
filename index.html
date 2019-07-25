@@ -7,15 +7,40 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>friendFilter</title>
     <script src="https://vk.com/js/api/openapi.js?162" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.1.1/handlebars.min.js"></script>
     <link href="style.css" rel="stylesheet">
 </head>
 
 <body>
     <div id="friendFilter">
         <div id="headerInfo"></div>
+        <div id="friendsList"></div></div>
     </div>
     <div id="vk_api_transport"></div>
 </body>
+
+
+<script id="templateFriends" type="text/x-handlebars-template">
+    {{#if this.length}}
+    <h4 class="users__block_members">Количество
+      <span>({{this.length}})</span>
+    </h4>
+    {{/if}}
+  <ul class="users-list">
+      {{#each this}}
+      <li class="users-list__elem">  
+          <!-- {{#if avatar }}
+            <img class="users_list__img" src="{{avatar}}"></span>
+          {{/if}} -->
+          <img src="{{photo_50}}" />
+          <span data-first_name="{{first_name}}">{{first_name}}</span>
+          <span data-last_name="{{last_name}}">{{last_name}}</span>
+      </li>
+      {{/each}}
+  </ul>
+  
+</script>
+
 <script src="./dist/bundle.js"></script>
 
 </html>

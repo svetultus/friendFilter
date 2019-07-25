@@ -32,4 +32,13 @@ module.exports = class {
                 });
             })
     }
+
+    getUserFriends () {
+        return new Promise(function (resolve, reject) {
+            VK.api('friends.get', {v:'5.101', fields: 'nickname, photo_50'}, 
+            function (response) {
+                resolve(response);
+            });
+        })
+    }
 }
