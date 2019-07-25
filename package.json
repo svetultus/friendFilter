@@ -1,12 +1,13 @@
 {
-  "name": "mapYandex",
+  "name": "friend-filter",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
     "dev": "webpack --mode development",
-    "watch": "webpack-dev-server --progress --colors",
-    "start": "npm run watch"
+    "watch": "webpack --watch --mode development",
+    "start": "webpack-dev-server --colors",
+    "build": "webpack"
   },
   "dependencies": {
     "webpack": "^4.34.0",

@@ -5,12 +5,18 @@ module.exports = {
     output: {
         filename: "./bundle.js"
     },
-    devtool: 'sourse-map',
+    devtool: 'source-map',
+    devServer: {
+        contentBase: './'
+        },
     module:{
         rules:[
             {
                 test: /\.js$/,
-                include: path.resolve(__dirname, 'js/js'),
+                include: [
+                    path.resolve(__dirname, './modules/'),
+                    path.resolve(__dirname, './mvc/')
+                  ],
                 use:{
                     loader: 'babel-loader',
                     options:{
