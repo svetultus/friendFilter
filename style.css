@@ -1,0 +1,12 @@
+.friends-filter {
+    display: flex;
+    flex-wrap: wrap;
+}
+.friends-filter__header {
+    flex: 100% 0 0;
+    min-width: 100%;
+}
+.friends-filter__inner {
+    flex: 50% 0 0;
+    min-width: 50%;;
+}
