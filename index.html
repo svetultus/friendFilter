@@ -14,8 +14,19 @@
 <body>
     <div id="friendsFilter" class="friends-filter">
         <div id="headerInfo" class="friends-filter__header"></div>
-        <div id="friendsList" class="friends-filter__inner"  draggable="false"></div>
-        <div id="friendsListFiltered" class="friends-filter__inner"  draggable="false">
+        <div id="friendsList1" class="friends-filter__inner"  draggable="false">
+            <form class="friends-filter__form" id="friends-filter__form_1">
+                <input type="text" />
+                <button type="submit">Искать</button>
+            </form>
+            <ul class="friends-filter__list"  draggable="false">
+            </ul>
+        </div>
+        <div id="friendsList2" class="friends-filter__inner"  draggable="false">
+            <form class="friends-filter__form" id="friends-filter__form_2">
+                <input type="text" />
+                <button type="submit">Искать</button>
+            </form>
             <ul class="friends-filter__list"  draggable="false">
             </ul>
         </div>
@@ -25,24 +36,19 @@
 
 
 <script id="templateFriends" type="text/x-handlebars-template">
-    {{#if this.length}}
+    {{#if this.friends.length}}
     <h4 class="">Количество
       <span>({{this.length}})</span>
     </h4>
     {{/if}}
-  <ul class="friends-filter__list" draggable="false">
-      {{#each this}}
-      <li class="friends-filter__list-elem" draggable="true">  
-          <!-- {{#if avatar }}
-            <img class="users_list__img" src="{{avatar}}"></span>
-          {{/if}} -->
-          <img src="{{photo_50}}"  draggable="false" />
-          <span data-first_name="{{first_name}}" draggable="false">{{first_name}}</span>
-          <span data-last_name="{{last_name}}" draggable="false">{{last_name}}</span>
-          <button class="friends-filter__list-btn friends-filter__list-btn_add">+</button>
-      </li>
-      {{/each}}
-  </ul>
+    {{#each this.friends}}
+    <li class="friends-filter__list-elem" draggable="true" data-id="{{id}}">  
+        <img src="{{photo_50}}"  draggable="false" />
+        <span data-first_name="{{first_name}}" draggable="false">{{first_name}}</span>
+        <span data-last_name="{{last_name}}" draggable="false">{{last_name}}</span>
+        <button class="friends-filter__list-btn friends-filter__list-btn_{{../this.btnClass}}">+</button>
+    </li>
+    {{/each}}
   
 </script>
 
