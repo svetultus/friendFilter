@@ -1,4 +1,6 @@
 import Controller from './mvc/controller';
+import '../scss/style.scss'
+
 let init = require ('../init.json');
 
 const options = {

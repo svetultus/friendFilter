@@ -1,3 +1,6 @@
+body {
+    color: green
+}
 .friends-filter {
     display: flex;
     flex-wrap: wrap;
@@ -8,5 +11,5 @@
 }
 .friends-filter__inner {
     flex: 50% 0 0;
-    min-width: 50%;;
+    min-width: 50%;
 }

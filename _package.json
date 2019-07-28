@@ -1,0 +1,6 @@
+/*"scripts": {
+    "dev": "webpack --mode development",
+    "watch": "webpack --watch --mode development",
+    "start": "webpack-dev-server --colors",
+    "build": "webpack"
+  },*/
