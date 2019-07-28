@@ -13,8 +13,6 @@ export default class {
         this.form1 = options.form1;
         this.form2 = options.form2;
         this.friendFilterListClass = options.friendFilterListClass;
-        // this.map[0].data = [];
-        // this.map[1].data = [];
         this.map = [{
             data: [],
             html: this.list1,
@@ -28,6 +26,7 @@ export default class {
             zone: this.zoneRight,
             btnClass: 'remove'
         }];
+        this.storageKey = 'friendsList1234';
 
         this.dragStartHandler = this.dragStartHandler.bind(this);
         this.dragEndHandler = this.dragEndHandler.bind(this);
@@ -37,9 +36,9 @@ export default class {
         this.getItem = this.getItem.bind(this);
         this.clickHandler = this.clickHandler.bind(this);
         this.filterInputChangeHandler = this.filterInputChangeHandler.bind(this);
-        //this.moveItem = this.moveItem.bind(this);
         this.moveData = this.moveData.bind(this);
         this.filterList = this.filterList.bind(this);
+        this.submitHandler = this.submitHandler.bind(this);
 
         this.VKobj = new VKAPI;
 
@@ -47,10 +46,44 @@ export default class {
         .then (()=>{
             this.VKobj.getUserData(this.headerInfo);
             this.VKobj.getUserFriends().then((friends)=>{
-                // this.map[0].data = friends.response.items;
-                // this.map[0].data = this.map[0].data.slice(0,5);
                 this.map[0].data = friends.response.items;
-                this.map[0].data = this.map[0].data.slice(0,5);
+                this.map[0].data = this.map[0].data.slice(1,6);
+
+                if (this.storageAvailable('localStorage')) {
+                    let storage = localStorage;
+                    let listFiltered =  JSON.parse(storage.getItem(this.storageKey));
+                    // if (listFiltered) {
+                    //     this.map[1].data = listFiltered;
+                    // }
+                    let friendsDeleted = [];
+
+                    listFiltered.forEach((elemFromFiltered, index) => {
+                        let friendIsDeleted = true;
+
+                        this.map[0].data = this.map[0].data.filter((elem)=>{
+                            if (elem.id === elemFromFiltered.id ) {
+                                friendIsDeleted = false;
+                                return false;
+                            } else {
+                                return true;
+                            }
+                        });
+                        
+                        if (friendIsDeleted) friendsDeleted.push(elemFromFiltered.id);
+                    });
+                    
+                    // удаляем друзей, которые были в старом списке, но теперь отсутствуют
+                    friendsDeleted.forEach((idToDelete)=> {
+                        listFiltered = listFiltered.filter((elem)=>{
+                            return !(elem.id === idToDelete);
+                        })
+                    })
+
+                    if (listFiltered) {
+                        this.map[1].data = listFiltered;
+                    }
+                }
+
                 this.renderFriends();
             });
             
@@ -72,15 +105,11 @@ export default class {
     renderFriends() {
         let html,
             render = Handlebars.compile(this.templateFriends);
+
         this.map.forEach((item, index)=> {
             html = render({friends: item.data, btnClass: item.btnClass});
             item.html.innerHTML = html;
         })
-        // html = render({friends: this.map[0].data, btnClass: 'add'});
-        // this.list1.innerHTML = html;
-        // html = render({friends: this.map[1].data, btnClass: 'remove'});
-        // this.list2.innerHTML = html;
-
     }
 
     getZone (elem) {
@@ -98,8 +127,7 @@ export default class {
             listFrom,
             listTo,
             filterStr,
-            form,
-            input;
+            form;
 
         if (e.type === 'click' && e.target.classList.contains('friends-filter__list-btn_add')) {
             listFrom = this.map[0].data;
@@ -179,13 +207,28 @@ export default class {
     submitHandler(e) {
         e.preventDefault();
 
-        //console.log(e.target);
+        if (e.target.classList.contains('friends-filter__form_save')) {
+            if (this.storageAvailable('localStorage')) {
+                let storage = localStorage;
+
+                // сбрасываем скрытие отображения элемента, если сейчас применен фильтр, чтобы при
+                // загрузке отображались все элементы
+                this.map[1].data.forEach((elem)=>{
+                    elem.hidden = false
+                });
+                storage[this.storageKey] = JSON.stringify(this.map[1].data);
+            }
+        }
     }
 
     filterInputChangeHandler (e) {
         const input = e.target;
+        
+        if (!input.closest('friends-filter__form_filter')) {
+            return;
+        }
 
-        console.log(input);
+        console.log(this.getZone(input));
 
         if (this.getZone(input).getAttribute('id') === 'friendsList1') {
             this.map[0].data = this.filterList (this.map[0].data, input.value);
@@ -196,6 +239,7 @@ export default class {
         this.renderFriends ();
 
     }
+
     filterList (list, str) {
         let listFiltered = list.slice();
         let re = new RegExp(str, 'gi');
@@ -203,5 +247,18 @@ export default class {
             item.hidden = (!(item.first_name.match(re) || item.last_name.match(re)));
         });
         return listFiltered;
+    }
+
+    storageAvailable(type) {
+        try {
+            var storage = window[type],
+                x = '__storage_test__';
+            storage.setItem(x, x);
+            storage.removeItem(x);
+            return true;
+        }
+        catch(e) {
+            return false;
+        }
     }
 }

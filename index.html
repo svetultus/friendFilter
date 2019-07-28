@@ -15,7 +15,7 @@
     <div id="friendsFilter" class="friends-filter">
         <div id="headerInfo" class="friends-filter__header"></div>
         <div id="friendsList1" class="friends-filter__inner"  draggable="false">
-            <form class="friends-filter__form" id="friends-filter__form_1">
+            <form class="friends-filter__form friends-filter__form_filter" id="friends-filter__form_1">
                 <input type="text" class="friends-filter__input" />
                 <button type="submit">Искать</button>
             </form>
@@ -23,13 +23,16 @@
             </ul>
         </div>
         <div id="friendsList2" class="friends-filter__inner"  draggable="false">
-            <form class="friends-filter__form" id="friends-filter__form_2">
+            <form class="friends-filter__form friends-filter__form_filter" id="friends-filter__form_2">
                 <input type="text" class="friends-filter__input" />
                 <button type="submit">Искать</button>
             </form>
             <ul class="friends-filter__list"  draggable="false">
             </ul>
         </div>
+        <form class="friends-filter__form_save">
+            <button type="save" class="friends-filter__btn_save">Сохранить</button>
+        </form>
     </div>
     <div id="vk_api_transport"></div>
 </body>
