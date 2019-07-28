@@ -16,7 +16,7 @@
         <div id="headerInfo" class="friends-filter__header"></div>
         <div id="friendsList1" class="friends-filter__inner"  draggable="false">
             <form class="friends-filter__form" id="friends-filter__form_1">
-                <input type="text" />
+                <input type="text" class="friends-filter__input" />
                 <button type="submit">Искать</button>
             </form>
             <ul class="friends-filter__list"  draggable="false">
@@ -24,7 +24,7 @@
         </div>
         <div id="friendsList2" class="friends-filter__inner"  draggable="false">
             <form class="friends-filter__form" id="friends-filter__form_2">
-                <input type="text" />
+                <input type="text" class="friends-filter__input" />
                 <button type="submit">Искать</button>
             </form>
             <ul class="friends-filter__list"  draggable="false">
@@ -42,7 +42,8 @@
     </h4>
     {{/if}}
     {{#each this.friends}}
-    <li class="friends-filter__list-elem" draggable="true" data-id="{{id}}">  
+    <li class="friends-filter__list-elem" draggable="true" data-id="{{id}}" 
+        {{#if hidden}} hidden {{/if}} >  
         <img src="{{photo_50}}"  draggable="false" />
         <span data-first_name="{{first_name}}" draggable="false">{{first_name}}</span>
         <span data-last_name="{{last_name}}" draggable="false">{{last_name}}</span>

@@ -23,8 +23,10 @@ export default class {
         this.getZone = this.getZone.bind(this);
         this.getItem = this.getItem.bind(this);
         this.clickHandler = this.clickHandler.bind(this);
-        this.moveItem = this.moveItem.bind(this);
+        this.filterInputChangeHandler = this.filterInputChangeHandler.bind(this);
+        //this.moveItem = this.moveItem.bind(this);
         this.moveData = this.moveData.bind(this);
+        this.filterList = this.filterList.bind(this);
 
         this.VKobj = new VKAPI;
 
@@ -48,6 +50,8 @@ export default class {
         this.container.addEventListener('dragover', this.dragOverHandler, true);
         this.container.addEventListener('click', this.clickHandler, true);
         this.container.addEventListener('submit', this.submitHandler, true);
+        this.container.addEventListener('change', this.filterInputChangeHandler, true)
+        this.container.addEventListener('keyup', this.filterInputChangeHandler, true)
     }
 
     renderFriends() {
@@ -60,12 +64,15 @@ export default class {
         this.list2.innerHTML = html;
 
     }
+
     getZone (elem) {
         return elem.closest('.friends-filter__inner');
     }
+
     getItem (elem) {
         return elem.closest('.friends-filter__list-elem');
     }
+
     moveData (id, e) {
         let itemId = Number(id),
             itemMoved,
@@ -74,16 +81,12 @@ export default class {
             listTo;
 
         if (e.type === 'click' && e.target.classList.contains('friends-filter__list-btn_add')) {
-            console.log('добавить');
-            //zone = this.zoneRight;
             listFrom = this.friendsList1;
             listTo = this.friendsList2;
             
         } else if (e.type === 'click' && e.target.classList.contains('friends-filter__list-btn_remove')) {
-            console.log('удалить');
             listFrom = this.friendsList2;
             listTo = this.friendsList1;
-            // zone = this.zoneLeft;
         }
         if (e.type === 'drop' && (this.startDragArea !== this.getZone(e.target))) {
             if (this.startDragArea.getAttribute('id') === 'friendsList1') {
@@ -102,44 +105,35 @@ export default class {
         
         itemMoved = listFrom.splice(index,1);
         listTo.push(itemMoved[0]); 
-        //console.log(listSrc, listTarget, itemId);
     }
 
     dragStartHandler(e) {
-        // console.log(e.type);
-        // console.log(e);
         this.draggingItem = e.target;
         this.startDragArea = this.getZone(e.target);
-        // console.log(this.draggingItem);
-        // console.log(this.startDragArea);
+    }
 
-    }
     dragEndHandler(e) {
-        // console.log(e.type);
-        //console.log(e);
     }
+
     dropHandler(e) {
-        //console.log(e.target);
         let zone = this.getZone (e.target);
         if (zone && this.startDragArea !== zone) {
-            //this.moveItem (this.draggingItem, zone);
             this.moveData(this.draggingItem.getAttribute('data-id'), e);
             this.renderFriends();
         }
     }
 
-    moveItem (item, zone) {
-        let btn = item.querySelector('.' + this.friendFilterListClass + '-btn');
-        let ul = zone.querySelector('.' + this.friendFilterListClass);
+    // moveItem (item, zone) {
+    //     let btn = item.querySelector('.' + this.friendFilterListClass + '-btn');
+    //     let ul = zone.querySelector('.' + this.friendFilterListClass);
 
-        btn.classList.toggle(this.friendFilterListClass + '-btn_add');
-        btn.classList.toggle(this.friendFilterListClass + '-btn_remove');
-        ul.appendChild(item);
-    }
+    //     btn.classList.toggle(this.friendFilterListClass + '-btn_add');
+    //     btn.classList.toggle(this.friendFilterListClass + '-btn_remove');
+    //     ul.appendChild(item);
+    // }
 
     dragOverHandler(e) {
         e.preventDefault();
-        //console.log(e.target);
     }
 
     clickHandler (e) {
@@ -154,6 +148,29 @@ export default class {
     submitHandler(e) {
         e.preventDefault();
 
-        console.log(e.target);
+        //console.log(e.target);
+    }
+
+    filterInputChangeHandler (e) {
+        const input = e.target;
+
+        console.log(input);
+
+        if (this.getZone(input).getAttribute('id') === 'friendsList1') {
+            this.friendsList1 = this.filterList (this.friendsList1, input.value);
+        } else if (this.getZone(input).getAttribute('id') === 'friendsList2') {
+            this.friendsList2 = this.filterList (this.friendsList2, input.value);
+        }
+
+        this.renderFriends ();
+
+    }
+    filterList (list, str) {
+        let listFiltered = list.slice();
+        let re = new RegExp(str, 'gi');
+        listFiltered.forEach((item) => {
+            item.hidden = (!(item.first_name.match(re) || item.last_name.match(re)));
+        });
+        return listFiltered;
     }
 }
