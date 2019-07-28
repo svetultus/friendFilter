@@ -13,8 +13,21 @@ export default class {
         this.form1 = options.form1;
         this.form2 = options.form2;
         this.friendFilterListClass = options.friendFilterListClass;
-        this.friendsList1 = [];
-        this.friendsList2 = [];
+        // this.map[0].data = [];
+        // this.map[1].data = [];
+        this.map = [{
+            data: [],
+            html: this.list1,
+            form: this.form1,
+            zone: this.zoneLeft,
+            btnClass: 'add'
+            }, {
+            data: [],
+            html: this.list2,
+            form: this.form2,
+            zone: this.zoneRight,
+            btnClass: 'remove'
+        }];
 
         this.dragStartHandler = this.dragStartHandler.bind(this);
         this.dragEndHandler = this.dragEndHandler.bind(this);
@@ -34,8 +47,10 @@ export default class {
         .then (()=>{
             this.VKobj.getUserData(this.headerInfo);
             this.VKobj.getUserFriends().then((friends)=>{
-                this.friendsList1 = friends.response.items;
-                this.friendsList1 = this.friendsList1.slice(0,5);
+                // this.map[0].data = friends.response.items;
+                // this.map[0].data = this.map[0].data.slice(0,5);
+                this.map[0].data = friends.response.items;
+                this.map[0].data = this.map[0].data.slice(0,5);
                 this.renderFriends();
             });
             
@@ -57,11 +72,14 @@ export default class {
     renderFriends() {
         let html,
             render = Handlebars.compile(this.templateFriends);
-        
-        html = render({friends: this.friendsList1, btnClass: 'add'});
-        this.list1.innerHTML = html;
-        html = render({friends: this.friendsList2, btnClass: 'remove'});
-        this.list2.innerHTML = html;
+        this.map.forEach((item, index)=> {
+            html = render({friends: item.data, btnClass: item.btnClass});
+            item.html.innerHTML = html;
+        })
+        // html = render({friends: this.map[0].data, btnClass: 'add'});
+        // this.list1.innerHTML = html;
+        // html = render({friends: this.map[1].data, btnClass: 'remove'});
+        // this.list2.innerHTML = html;
 
     }
 
@@ -78,24 +96,27 @@ export default class {
             itemMoved,
             index,
             listFrom,
-            listTo;
+            listTo,
+            filterStr,
+            form,
+            input;
 
         if (e.type === 'click' && e.target.classList.contains('friends-filter__list-btn_add')) {
-            listFrom = this.friendsList1;
-            listTo = this.friendsList2;
+            listFrom = this.map[0].data;
+            listTo = this.map[1].data;
             
         } else if (e.type === 'click' && e.target.classList.contains('friends-filter__list-btn_remove')) {
-            listFrom = this.friendsList2;
-            listTo = this.friendsList1;
+            listFrom = this.map[1].data;
+            listTo = this.map[0].data;
         }
         if (e.type === 'drop' && (this.startDragArea !== this.getZone(e.target))) {
             if (this.startDragArea.getAttribute('id') === 'friendsList1') {
-                listFrom = this.friendsList1;
-                listTo = this.friendsList2;
+                listFrom = this.map[0].data;
+                listTo = this.map[1].data;
             }
             else if (this.startDragArea.getAttribute('id') === 'friendsList2') {
-                listFrom = this.friendsList2;
-                listTo = this.friendsList1;
+                listFrom = this.map[1].data;
+                listTo = this.map[0].data;
             }
         }
         
@@ -105,6 +126,16 @@ export default class {
         
         itemMoved = listFrom.splice(index,1);
         listTo.push(itemMoved[0]); 
+        
+        this.map.forEach((item, index) => {
+            if (listTo === item.data) {
+                form = item.form;
+            }
+        });
+        filterStr = form.querySelector('.friends-filter__input').value;
+        if (filterStr) {
+            this.filterList (listTo, filterStr)
+        };
     }
 
     dragStartHandler(e) {
@@ -157,9 +188,9 @@ export default class {
         console.log(input);
 
         if (this.getZone(input).getAttribute('id') === 'friendsList1') {
-            this.friendsList1 = this.filterList (this.friendsList1, input.value);
+            this.map[0].data = this.filterList (this.map[0].data, input.value);
         } else if (this.getZone(input).getAttribute('id') === 'friendsList2') {
-            this.friendsList2 = this.filterList (this.friendsList2, input.value);
+            this.map[1].data = this.filterList (this.map[1].data, input.value);
         }
 
         this.renderFriends ();
