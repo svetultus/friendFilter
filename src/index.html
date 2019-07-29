@@ -13,26 +13,37 @@
 
 <body>
     <div id="friendsFilter" class="friends-filter">
-        <div id="headerInfo" class="friends-filter__header"></div>
-        <div id="friendsList1" class="friends-filter__inner"  draggable="false">
+        <div id="headerInfo" class="friends-filter__header">
+            Выберите друзей
+            <button class="btn btn_close"></button>
+        </div>
+        <div class="row">
             <form class="friends-filter__form friends-filter__form_filter" id="friends-filter__form_1">
-                <input type="text" class="friends-filter__input" />
-                <button type="submit">Искать</button>
+                <input type="text" class="friends-filter__input" placeholder="Начните вводить имя друга" />
+                <button type="submit" class="btn btn_search"></button>
             </form>
-            <ul class="friends-filter__list"  draggable="false">
-            </ul>
-        </div>
-        <div id="friendsList2" class="friends-filter__inner"  draggable="false">
             <form class="friends-filter__form friends-filter__form_filter" id="friends-filter__form_2">
-                <input type="text" class="friends-filter__input" />
-                <button type="submit">Искать</button>
+                    <input type="text" class="friends-filter__input" placeholder="Начните вводить имя друга" />
+                    <button type="submit" class=" btn btn_search"></button>
             </form>
-            <ul class="friends-filter__list"  draggable="false">
-            </ul>
         </div>
-        <form class="friends-filter__form_save">
-            <button type="save" class="friends-filter__btn_save">Сохранить</button>
-        </form>
+        <div class="row">
+            <div id="friendsList1" class="friends-filter__inner"  draggable="false">
+                
+                <ul class="friends-filter__list"  draggable="false">
+                </ul>
+            </div>
+            <div id="friendsList2" class="friends-filter__inner"  draggable="false">
+                
+                <ul class="friends-filter__list"  draggable="false">
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <form class="friends-filter__form_save">
+                <button type="save" class="btn friends-filter__btn_save">Сохранить</button>
+            </form>
+        </div>
     </div>
     <div id="vk_api_transport"></div>
 </body>
@@ -40,17 +51,19 @@
 
 <script id="templateFriends" type="text/x-handlebars-template">
     {{#if this.friends.length}}
-    <h4 class="">Количество
-      <span>({{this.length}})</span>
-    </h4>
+    <h4 class="friends-filter__list-header">{{this.header}}</h4>
     {{/if}}
     {{#each this.friends}}
     <li class="friends-filter__list-elem" draggable="true" data-id="{{id}}" 
-        {{#if hidden}} hidden {{/if}} >  
-        <img src="{{photo_50}}"  draggable="false" />
-        <span data-first_name="{{first_name}}" draggable="false">{{first_name}}</span>
-        <span data-last_name="{{last_name}}" draggable="false">{{last_name}}</span>
-        <button class="friends-filter__list-btn friends-filter__list-btn_{{../this.btnClass}}">+</button>
+        {{#if hidden}} hidden = true {{/if}} >  
+        <div class="friends-filter__list-img">
+            <img src="{{photo_50}}"  draggable="false" />
+        </div>
+        <div class="friends-filter__list-name">
+                <span data-first_name="{{first_name}}" draggable="false">{{first_name}}</span>
+                <span data-last_name="{{last_name}}" draggable="false">{{last_name}}</span>
+        </div> 
+        <button class="btn friends-filter__list-btn friends-filter__list-btn_{{../this.btnClass}}"></button>
     </li>
     {{/each}}
   

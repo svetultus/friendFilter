@@ -1,15 +1,230 @@
-body {
-    color: green
+$color-primary: #ff8663;
+$color-grey-light: #f0f0f0;
+$color-text: #9f9f9f;
+$color-text-bold: #4f4f4f;
+
+*   {
+    box-sizing: border-box
+    }
+
+html {
+    height: 100vh;
+
+    &:before {
+        content: "";
+        background: url('../images/logo.png') center 0 no-repeat;
+        width: 110px;
+        height: 25px;
+        display: block;
+        margin: auto;
+        background-size: contain;
+        transform: translateY(200%);
+        z-index: -2;
+        position: relative;
+    }
+    &:after {
+        content: "";
+        display:block;
+        width: 100%;
+        height: 100%;
+        background-color: transparentize(#999999, 0.4);
+        position: absolute;
+        z-index: -1;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
 }
+
+body {
+    font-family: 'Fira Sans', 'Arial', sans-serif;
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+body * {
+    font-size: 12px;
+}
+svg {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.btn {
+    &_search {
+        border: 0;
+        width: 16px;
+        height: 16px;
+        background: url('../images/icon-search.png') center center no-repeat;
+        background-size: contain;
+    }
+
+    &_close {
+        border: 0;
+        content: "";
+        width: 18px;
+        height: 18px;
+        padding: 5px;
+        background: url('../images/icon-close.png') center center no-repeat;
+        background-size: contain;
+        display: block;
+    }
+
+    &:focus {
+        outline: none;
+        box-shadow: 2px 2px 2px grey;   
+    }
+}
+.row {
+    display: flex;
+    width: 100%;
+}
+
 .friends-filter {
     display: flex;
     flex-wrap: wrap;
-}
-.friends-filter__header {
-    flex: 100% 0 0;
-    min-width: 100%;
-}
-.friends-filter__inner {
-    flex: 50% 0 0;
-    min-width: 50%;
+    max-width: 625px;
+    margin: auto;
+//     margin-top: 50%;
+//     transform: translateY(-50%);
+    background-color: $color-grey-light;
+    border-radius: 8px;
+    height: 600px;
+    overflow: hidden;
+
+
+    &__header {
+        flex: 100% 0 0;
+        min-width: 100%;
+        background-color: $color-primary;
+        color: white;
+        font-weight: 400;
+        padding: 16px;
+        border-radius: 8px 8px 0 0;
+        font-size: 16px;
+        position: relative;
+
+        .btn_close {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+        }
+    }
+
+    
+    &__inner {
+        flex: 50% 1 1;
+        min-width: 50%;
+        background-color: white;
+        height: 400px;
+        overflow: scroll;
+        position: relative;
+
+        &:first-child {
+            border-right: 1px solid $color-grey-light;
+        }
+    }
+
+    &__form {
+        background-color: $color-grey-light;
+        padding: 15px;
+        width: 50%;
+        position: relative;
+
+        &_save {
+            width: 100%;
+            padding: 15px;
+            align-self: flex-end;
+            border: 0;
+        }
+
+        &_filter {
+            .btn_search {
+                position: absolute;
+                left: 25px;
+                top: 50%;
+                transform: translateY(-50%);
+                margin-top: -3px;
+            }
+        }
+    }
+
+    &__input {
+        padding: 8px 15px 8px 30px;
+        border-radius: 15px;
+        border: 0;
+        width: 100%;
+
+        &:focus {
+            outline: none;
+            box-shadow: 2px 2px 2px grey;   
+        }
+    }
+
+     &__btn {
+        &_save {
+            margin: 0 0 0 auto;
+            background-color: $color-primary;
+            padding: 8px 15px;
+            color: white;
+            border-radius: 8px;
+            display: block;
+        }
+    }
+
+    &__list {
+        padding: 15px;
+        list-style-type: none;
+        height: 100%;
+        overflow: scroll;
+    }
+
+    &__list-header {
+        font-weight: 600;
+    }
+
+    &__list-elem {
+        display:flex;
+        align-items: center;
+        padding: 8px 15px;
+        justify-content: space-between;
+        border-bottom: 1px solid $color-grey-light;
+
+        &:hover, &:focus {
+            background-color: $color-grey-light
+        }
+
+        &[hidden] {
+            display: none;
+        }
+    }
+    &__list-img {
+        flex: 50px 0 0;
+        border-radius: 25px;
+        width: 50px;
+        height: 50px;
+        overflow: hidden;
+    }
+    &__list-name {
+        margin: 0 10px;
+        font-weight: 500;
+        flex: 80% 1 1;
+
+    }
+    &__list-btn {
+        flex: 18px 0 0;
+        border: 0;
+        width: 18px;
+        height: 18px;
+        padding: 5px;
+        background: url('../images/icon-plus.png') center center no-repeat;
+        background-size: contain;
+        justify-self: flex-end;
+        
+        &_remove{
+            transform:rotate(45deg)
+        }
+    }
 }

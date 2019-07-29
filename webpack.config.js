@@ -22,10 +22,10 @@ const config = {
   devtool: isDevelopment ? 'inline-source-map' : 'source-map',
   module: {
     rules: [
-    // {
-    //   test: /\.html$/,
-    //   use: 'html-loader'
-    // }, 
+    {
+      test: /\.html$/,
+      use: 'html-loader'
+    }, 
     {
       test: /\.js$/,
       exclude: /node_modules/,
@@ -63,13 +63,14 @@ const config = {
         }
       ]
     }, {
-      test: /images[\\\/].+\.(gif|png|jpe?g|svg)$/i,
+      //test: /images[\\\/].+\.(gif|png|jpe?g|svg)$/i,
+      test: /\.(gif|png|jpe?g|svg)$/,
       use: [{
         loader: 'file-loader',
         options: {
-          name: '[path]images/[name].[ext]'
+          name: 'images/[name].[ext]'
         }
-      }, {
+      },{
         loader: 'image-webpack-loader',
         options: {
           mozjpeg: {

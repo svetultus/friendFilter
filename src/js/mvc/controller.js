@@ -18,13 +18,15 @@ export default class {
             html: this.list1,
             form: this.form1,
             zone: this.zoneLeft,
-            btnClass: 'add'
+            btnClass: 'add',
+            header: 'Ваши друзья'
             }, {
             data: [],
             html: this.list2,
             form: this.form2,
             zone: this.zoneRight,
-            btnClass: 'remove'
+            btnClass: 'remove',
+            header: 'Друзья в списке'
         }];
         this.storageKey = 'friendsList1234';
 
@@ -44,10 +46,9 @@ export default class {
 
         this.VKobj.init(this.apiId)
         .then (()=>{
-            this.VKobj.getUserData(this.headerInfo);
             this.VKobj.getUserFriends().then((friends)=>{
                 this.map[0].data = friends.response.items;
-                this.map[0].data = this.map[0].data.slice(1,6);
+                this.map[0].data = this.map[0].data.slice(1,10);
 
                 if (this.storageAvailable('localStorage')) {
                     let storage = localStorage;
@@ -107,7 +108,7 @@ export default class {
             render = Handlebars.compile(this.templateFriends);
 
         this.map.forEach((item, index)=> {
-            html = render({friends: item.data, btnClass: item.btnClass});
+            html = render({friends: item.data, btnClass: item.btnClass, header: item.header});
             item.html.innerHTML = html;
         })
     }
@@ -223,21 +224,29 @@ export default class {
 
     filterInputChangeHandler (e) {
         const input = e.target;
+        const form = input.closest('.friends-filter__form_filter');
         
-        if (!input.closest('friends-filter__form_filter')) {
+        if (!form) {
             return;
         }
 
         console.log(this.getZone(input));
 
-        if (this.getZone(input).getAttribute('id') === 'friendsList1') {
-            this.map[0].data = this.filterList (this.map[0].data, input.value);
-        } else if (this.getZone(input).getAttribute('id') === 'friendsList2') {
-            this.map[1].data = this.filterList (this.map[1].data, input.value);
-        }
+        // if (this.getZone(input).getAttribute('id') === 'friendsList1') {
+        //     this.map[0].data = this.filterList (this.map[0].data, input.value);
+        // } else if (this.getZone(input).getAttribute('id') === 'friendsList2') {
+        //     this.map[1].data = this.filterList (this.map[1].data, input.value);
+        // }
+        const formId = form.getAttribute('id');
+        let listIndex;
 
+        this.map.forEach((elem, index)=>{
+            if (elem.form.getAttribute('id') === formId) {
+                listIndex = index;
+            }
+        });
+        this.map[listIndex].data = this.filterList (this.map[listIndex].data, input.value);
         this.renderFriends ();
-
     }
 
     filterList (list, str) {

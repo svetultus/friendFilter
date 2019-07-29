@@ -1,5 +1,7 @@
 import Controller from './mvc/controller';
-import '../scss/style.scss'
+import '../scss/style.scss';
+import '../index.html';
+import '../images/plus-solid.svg'
 
 let init = require ('../init.json');
 

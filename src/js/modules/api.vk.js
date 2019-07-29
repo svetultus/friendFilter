@@ -18,15 +18,12 @@ module.exports = class {
         });
     };
 
-    getUserData (headerInfo) {
+    getUserData () {
         return new Promise(function(resolve, reject) {
-            VK.api('users.get', {v:'5.101', 'name_case': 'gen'}, function(response) {
+            VK.api('users.get', {v:'5.101'}, function(response) {
                 if (response.error) {
                     reject(new Error(response.error.error_msg));
                 } else {
-                    headerInfo.textContent = 'Друзья на странице'
-                    + response.response[0].first_name + ' ' + response.
-                    response[0].last_name;
                     resolve();
                 }
                 });
