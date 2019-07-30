@@ -24,7 +24,7 @@ module.exports = class {
                 if (response.error) {
                     reject(new Error(response.error.error_msg));
                 } else {
-                    resolve();
+                    resolve(response);
                 }
                 });
             })
@@ -34,7 +34,8 @@ module.exports = class {
         return new Promise(function (resolve, reject) {
             VK.api('friends.get', {v:'5.101', fields: 'nickname, photo_50'}, 
             function (response) {
-                resolve(response);
+                if (response) resolve(response)
+                else reject (new Error(e.message));
             });
         })
     }

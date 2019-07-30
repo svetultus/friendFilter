@@ -7,7 +7,7 @@ let init = require ('../init.json');
 console.log(document.readyState);
 document.onreadystatechange = function () {
     console.log(document.readyState);
-    
+
     if (document.readyState === 'complete') {
         const options = {
             container: document.querySelector("#friendsFilter"),

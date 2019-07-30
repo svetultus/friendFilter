@@ -1,4 +1,5 @@
-const VKAPI = require('../modules/api.vk');
+const VKAPI = require ('../modules/api.vk');
+const View = require ('./view.js')
 
 export default class {
     constructor(options) {
@@ -53,9 +54,6 @@ export default class {
                 if (this.storageAvailable('localStorage')) {
                     let storage = localStorage;
                     let listFiltered =  JSON.parse(storage.getItem(this.storageKey));
-                    // if (listFiltered) {
-                    //     this.map[1].data = listFiltered;
-                    // }
                     let friendsDeleted = [];
                     if (listFiltered) {
                         listFiltered.forEach((elemFromFiltered, index) => {
@@ -106,12 +104,8 @@ export default class {
     }
 
     renderFriends() {
-        let html,
-            render = Handlebars.compile(this.templateFriends);
-
         this.map.forEach((item, index)=> {
-            html = render({friends: item.data, btnClass: item.btnClass, header: item.header});
-            item.html.innerHTML = html;
+            View.renderFriends(this.templateFriends, item);
         })
     }
 
@@ -186,15 +180,6 @@ export default class {
         }
     }
 
-    // moveItem (item, zone) {
-    //     let btn = item.querySelector('.' + this.friendFilterListClass + '-btn');
-    //     let ul = zone.querySelector('.' + this.friendFilterListClass);
-
-    //     btn.classList.toggle(this.friendFilterListClass + '-btn_add');
-    //     btn.classList.toggle(this.friendFilterListClass + '-btn_remove');
-    //     ul.appendChild(item);
-    // }
-
     dragEnterHandler(e) {
         e.preventDefault();
     }
@@ -207,7 +192,6 @@ export default class {
         let item = this.getItem(e.target);
 
         if (!item || !e.target.classList.contains('friends-filter__list-btn')) return; 
-        //this.moveItem (item, zone);
         this.moveData(item.getAttribute('data-id'), e);
         this.renderFriends();
     }
@@ -237,13 +221,6 @@ export default class {
             return;
         }
 
-        console.log(this.getZone(input));
-
-        // if (this.getZone(input).getAttribute('id') === 'friendsList1') {
-        //     this.map[0].data = this.filterList (this.map[0].data, input.value);
-        // } else if (this.getZone(input).getAttribute('id') === 'friendsList2') {
-        //     this.map[1].data = this.filterList (this.map[1].data, input.value);
-        // }
         const formId = form.getAttribute('id');
         let listIndex;
 
