@@ -18,9 +18,11 @@ html {
         display: block;
         margin: auto;
         background-size: contain;
-        transform: translateY(200%);
+        background-size: contain;
+        transform: translateY(200%) translateX(-50%);
         z-index: -2;
-        position: relative;
+        position: absolute;
+        margin-left: 50%;
     }
     &:after {
         content: "";
@@ -91,7 +93,8 @@ svg {
 //     transform: translateY(-50%);
     background-color: $color-grey-light;
     border-radius: 8px;
-    height: 600px;
+    //height: 600px;
+    max-height: 100%;
     overflow: hidden;
 
 
@@ -118,7 +121,7 @@ svg {
         flex: 50% 1 1;
         min-width: 50%;
         background-color: white;
-        height: 400px;
+        height: 300px;
         overflow: scroll;
         position: relative;
 

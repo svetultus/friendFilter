@@ -8,7 +8,7 @@
     <title>friendFilter</title>
     <script src="https://vk.com/js/api/openapi.js?162" type="text/javascript"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.1.1/handlebars.min.js"></script>
-    <link href="style.css" rel="stylesheet">
+    <!-- <link href="style.css" rel="stylesheet" type="text/css"> -->
 </head>
 
 <body>
@@ -54,7 +54,7 @@
     <h4 class="friends-filter__list-header">{{this.header}}</h4>
     {{/if}}
     {{#each this.friends}}
-    <li class="friends-filter__list-elem" draggable="true" data-id="{{id}}" 
+    <li class="friends-filter__list-elem" draggable="true" data-id="{{id}}" ondragstart="event.dataTransfer.setData('text/plain', 'This text may be dragged')"
         {{#if hidden}} hidden = true {{/if}} >  
         <div class="friends-filter__list-img">
             <img src="{{photo_50}}"  draggable="false" />

@@ -57,21 +57,22 @@ export default class {
                     //     this.map[1].data = listFiltered;
                     // }
                     let friendsDeleted = [];
+                    if (listFiltered) {
+                        listFiltered.forEach((elemFromFiltered, index) => {
+                            let friendIsDeleted = true;
 
-                    listFiltered.forEach((elemFromFiltered, index) => {
-                        let friendIsDeleted = true;
-
-                        this.map[0].data = this.map[0].data.filter((elem)=>{
-                            if (elem.id === elemFromFiltered.id ) {
-                                friendIsDeleted = false;
-                                return false;
-                            } else {
-                                return true;
-                            }
+                            this.map[0].data = this.map[0].data.filter((elem)=>{
+                                if (elem.id === elemFromFiltered.id ) {
+                                    friendIsDeleted = false;
+                                    return false;
+                                } else {
+                                    return true;
+                                }
+                            });
+                            
+                            if (friendIsDeleted) friendsDeleted.push(elemFromFiltered.id);
                         });
-                        
-                        if (friendIsDeleted) friendsDeleted.push(elemFromFiltered.id);
-                    });
+                    }
                     
                     // удаляем друзей, которые были в старом списке, но теперь отсутствуют
                     friendsDeleted.forEach((idToDelete)=> {
@@ -96,6 +97,7 @@ export default class {
         this.container.addEventListener('dragstart', this.dragStartHandler, true);
         this.container.addEventListener('dragend', this.dragEndHandler, true);
         this.container.addEventListener('drop', this.dropHandler, true);
+        this.container.addEventListener('dragenter', this.dragEnterHandler, true);
         this.container.addEventListener('dragover', this.dragOverHandler, true);
         this.container.addEventListener('click', this.clickHandler, true);
         this.container.addEventListener('submit', this.submitHandler, true);
@@ -176,6 +178,7 @@ export default class {
     }
 
     dropHandler(e) {
+        e.preventDefault();
         let zone = this.getZone (e.target);
         if (zone && this.startDragArea !== zone) {
             this.moveData(this.draggingItem.getAttribute('data-id'), e);
@@ -191,6 +194,10 @@ export default class {
     //     btn.classList.toggle(this.friendFilterListClass + '-btn_remove');
     //     ul.appendChild(item);
     // }
+
+    dragEnterHandler(e) {
+        e.preventDefault();
+    }
 
     dragOverHandler(e) {
         e.preventDefault();
